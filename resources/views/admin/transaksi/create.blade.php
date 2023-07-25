@@ -76,19 +76,20 @@
 
                 @endif
                 <div class="row clone">
-                    <div class="col-4">
+                    <div class="col-12">
                         <label for="inputPassword4">Jenis Sampah</label>
                         <select class="form-control" name="jenis_sampah[]" id="jenis_sampah" placeholder="Email">
                             <option value="" data-harga=" ">Pilih jenis sampah</option>
                             @foreach ($jenis_sampah as $jenis)
                             <option value="{{ $jenis->id }}" data-harga="{{ number_format($jenis->harga,2)}}">
-                                {{ $jenis->nama }} | Rp. {{ number_format($jenis->harga,2) }}
+                                {{ $jenis->kategori->nama }} | {{ $jenis->nama }} | Rp. {{
+                                number_format($jenis->harga,2) }}
                             </option>
                             @endforeach
                         </select>
                         <div class="text-danger" id="error-jenis_sampah"></div>
                     </div>
-                    <div class="col-4">detail
+                    <div class="col-6">detail
                         <label for="inputPassword4">Berat</label>
                         <div class="input-group mb-3">
                             <input type="number" class="form-control" name="berat[]" placeholder="Masukan berat"
@@ -96,7 +97,7 @@
 
                         </div>
                     </div>
-                    <div class="col-4" id="harga-show">
+                    <div class="col-6" id="harga-show">
                         <label for="inputPassword4">Harga</label>
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" name="harga[]" disabled id="harga" value="Rp. "
@@ -118,7 +119,7 @@
 
 @push('js')
 <script>
-    $('.btn-primary').click(function (e) { 
+    $('.btn-primary').click(function (e) {
          var clonedRow = $(".clone:last").clone();
         // Clear input values
         clonedRow.find("input[type='number']").val("");

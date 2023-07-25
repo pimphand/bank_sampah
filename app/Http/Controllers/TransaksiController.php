@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DetailTransaksi;
 use App\Models\JenisSampah;
+use App\Models\Sampah;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,8 +17,14 @@ class TransaksiController extends Controller
      */
     public function index()
     {
+        if (auth()->user()->role == 'admin') {
+            $transaksi = Transaksi::all();
+        } else {
+            $transaksi = Transaksi::whereUserId(auth()->id())->get();
+        }
+
         return view('admin.transaksi.index', [
-            'transaksi' => Transaksi::all()
+            'transaksi' => $transaksi
         ]);
     }
 
@@ -28,7 +35,7 @@ class TransaksiController extends Controller
     {
         return view('admin.transaksi.create', [
             'nasabah' => User::whereRole('nasabah')->get(),
-            'jenis_sampah' => JenisSampah::all(),
+            'jenis_sampah' => Sampah::all(),
             'data' => null
         ]);
     }
@@ -48,9 +55,10 @@ class TransaksiController extends Controller
             ]);
             $total = 0;
             foreach ($request->jenis_sampah as $key => $harga) {
-                $jenis = JenisSampah::find($request->jenis_sampah[$key]);
+                $jenis = Sampah::find($request->jenis_sampah[$key]);
                 $transaksi->details()->create([
-                    "jenis_sampah_id" => $jenis->id,
+                    "jenis_sampah_id" => $jenis->kategori->id,
+                    "sampah_id" => $jenis->id,
                     "harga" => $jenis->harga,
                     "berat" => $request->berat[$key],
                 ]);

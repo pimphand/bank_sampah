@@ -24,7 +24,13 @@
                                             aria-label="Office: activate to sort column ascending">#</th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
                                             colspan="1" style="width: 102px;"
+                                            aria-label="Age: activate to sort column ascending">Kategori</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                            colspan="1" style="width: 102px;"
                                             aria-label="Age: activate to sort column ascending">Nama</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
+                                            colspan="1" style="width: 191px;"
+                                            aria-label="Start date: activate to sort column ascending">Harga</th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
                                             colspan="1" style="width: 173px;"
                                             aria-label="Salary: activate to sort column ascending">Aksi</th>
@@ -35,7 +41,9 @@
                                     @foreach ($jenis as $key=> $item)
                                     <tr class="odd">
                                         <td class="sorting_1">{{ $key+1 }}</td>
+                                        <td>{{ $item->kategori->nama }}</td>
                                         <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->harga }}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Contoh Button Group">
                                                 <button type="button" class="btn btn-info" data-edit="1"
@@ -66,16 +74,32 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form id="form" action="{{ route('jenis-sampah.store') }}" method="POST">
+                <form id="form" action="{{ route('sampah.store') }}" method="POST">
                     @csrf
                     <div class="put">
 
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Jenis Sampah</label>
+                            <select type="text" class="form-control" id="kategori" name="kategori"
+                                placeholder="Masukan nama">
+                                @foreach ($kategori as $sampah)
+                                <option value="{{ $sampah->id }}">{{ $sampah->nama }}</option>
+                                @endforeach
+                            </select>
+                            <div class="text-danger" id="error-nama"></div>
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
                             <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukan nama">
                             <div class="text-danger" id="error-nama"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Harga/kg</label>
+                            <input type="number" min="1" class="form-control" id="harga" name="harga"
+                                id="exampleInputharga1" placeholder="">
+                            <div class="text-danger" id="error-harga"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -94,7 +118,7 @@
     $('.btn-info').click(function (e) {
         e.preventDefault();
         if ($(this).data('edit') == 1) {
-            let url = "{{ route('jenis-sampah.update',':id') }}"
+            let url = "{{ route('sampah.update',':id') }}"
                 url = url.replace(':id',$(this).data('id'));
             $("form").attr('action',url);
             $('.put').html('@method("put")');
@@ -103,7 +127,7 @@
             $('#exampleModalLabel').text('Edit Data')
         }else{
             $('.put').html('');
-            let url = "{{ route('jenis-sampah.store') }}"
+            let url = "{{ route('sampah.store') }}"
             $("form").attr('action',url);
             $('#exampleModalLabel').text('Tambah Data')
         }
@@ -124,7 +148,7 @@
 
     $(".btn-danger").click(function (e) {
         e.preventDefault();
-        let url = "{{ route('jenis-sampah.destroy',':id') }}"
+        let url = "{{ route('sampah.destroy',':id') }}"
             url = url.replace(':id',$(this).data('id'))
         deleted(url)
     });

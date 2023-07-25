@@ -3,17 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisSampah;
+use App\Models\Sampah;
 use Illuminate\Http\Request;
 
-class JenisSampahController extends Controller
+class SampahController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.jenis.index', [
-            "jenis" => JenisSampah::all()
+        return view('admin.sampah.index', [
+            "jenis" => Sampah::all(),
+            'kategori' => JenisSampah::all()
         ]);
     }
 
@@ -32,9 +34,12 @@ class JenisSampahController extends Controller
     {
         $data = $request->validate([
             "nama" => 'required',
+            "harga" => 'required|numeric',
         ]);
-        $data['harga'] = 0;
-        JenisSampah::create($data);
+        $data['jenis_sampah_id'] = $request->kategori;
+        $data['satuan'] = 'kg';
+        $data['berat'] = 0;
+        Sampah::create($data);
         return back();
     }
 
@@ -63,8 +68,8 @@ class JenisSampahController extends Controller
             "nama" => 'required',
             "harga" => 'required|numeric',
         ]);
-        $data['harga'] = 0;
-        JenisSampah::find($id)->update($data);
+
+        Sampah::find($id)->update($data);
         return back();
     }
 
@@ -73,6 +78,6 @@ class JenisSampahController extends Controller
      */
     public function destroy(string $id)
     {
-        return JenisSampah::destroy($id);
+        return Sampah::destroy($id);
     }
 }
