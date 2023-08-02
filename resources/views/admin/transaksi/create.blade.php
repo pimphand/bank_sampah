@@ -89,26 +89,33 @@
                         </select>
                         <div class="text-danger" id="error-jenis_sampah"></div>
                     </div>
-                    <div class="col-6">detail
+                    <div class="col-4">detail
                         <label for="inputPassword4">Berat</label>
                         <div class="input-group mb-3">
-                            <input type="number" class="form-control" name="berat[]" placeholder="Masukan berat"
+                            <input  class="form-control number" id="berat" type="number" pattern="[0-9]*" name="berat[]" placeholder="Masukan berat"
                                 aria-label="Masukan berat" aria-describedby="basic-addon2">
 
                         </div>
                     </div>
-                    <div class="col-6" id="harga-show">
+                    <div class="col-4" id="harga-show">
                         <label for="inputPassword4">Harga</label>
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="harga[]" disabled id="harga" value="Rp. "
+                            <input type="text" class="form-control" name="harga[]" readonly id="harga" value="Rp. " data-harga=""
                                 placeholder="Masukan harga" aria-label="Masukan harga" aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label for="inputPassword4">Total</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="harga[]" readonly id="total"
+                                placeholder="Masukan harga" aria-label="Masukan harga" value="Rp.0" aria-describedby="basic-addon2">
                         </div>
                     </div>
                 </div>
                 <div id="detail">
                 </div>
                 <div class="delete"></div>
-                <button type="button" class="btn btn-primary">Tambah Detail</button>
+                {{-- <button type="button" class="btn btn-primary">Tambah Detail</button> --}}
                 <button type="button" class="btn btn-success" data-edit="{{ $data != null ? 1 : 0 }}">Simpan</button>
             </form>
         </div>
@@ -138,10 +145,43 @@
         $(this).closest('.clone').remove();
     });
 
+    $('.number').keypress(function (event) {
+        var keyCode = event.which;
+        if (keyCode < 48 || keyCode> 57) {
+            event.preventDefault();
+        }
+    });
+
+    let harga = 0;
+
     $('#jenis_sampah').change(function (e) {
         e.preventDefault();
-        console.log($(this).find(':selected').data('harga'));
-        $(this).closest('.row').find('#harga').val("Rp. "+$(this).find(':selected').data('harga'));
+        harga = $(this).find(':selected').data('harga'); // Remove the "let" keyword here
+        var formattedHarga = "Rp. " + harga.toLocaleString(); // Format the number with commas
+        $(this).closest('.row').find('#harga').val(formattedHarga);
+        var cleanNumberString = harga.replace(/,/g, '');
+
+        // Convert the cleaned string to an integer
+        var numberInteger = parseInt(cleanNumberString, 10);
+        cleanNumberString = cleanNumberString.replace(/\.00$/, '');
+        $(this).closest('.row').find('#harga').data('harga', cleanNumberString);
+    });
+
+    $('#total').val("Rp. 0");
+
+    $('#berat').keyup(function (e) {
+        var berat = parseInt($(this).val(), 10);
+        var harga = parseInt($('#harga').data('harga'));
+        var total = berat * harga;
+
+        // Check if the total is a valid number
+        if (!isNaN(total) && isFinite(total)) {
+        var formattedHarga = "Rp. " + total.toLocaleString(); // Format the number with commas
+        } else {
+        var formattedHarga = "Rp. 0"; // Set to Rp. 0 if the total is NaN or not a finite number
+        }
+
+        $('#total').val(formattedHarga);
     });
 </script>
 

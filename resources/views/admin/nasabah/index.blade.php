@@ -124,7 +124,7 @@
                             <div class="text-danger" id="error-password"></div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputpassword1">No Telepon</label>
+                            <label for="exampleInputpassword1">Alamat</label>
                             <textarea type="text" class="form-control" id="alamat" name="alamat"
                                 placeholder="Masukan alamat"></textarea>
                             <div class="text-danger" id="error-alamat"></div>
@@ -171,7 +171,7 @@
 
 @push('js')
 <script>
-    $('.btn-info').click(function (e) { 
+    $('.btn-info').click(function (e) {
         e.preventDefault();
         $("#form")[0].reset();
         if ($(this).data('edit') == 1) {
@@ -208,7 +208,7 @@
         }
     });
 
-    $(".btn-danger").click(function (e) { 
+    $(".btn-danger").click(function (e) {
         e.preventDefault();
         let url = "{{ route($role.'.destroy',':id') }}"
             url = url.replace(':id',$(this).data('id'))
@@ -221,7 +221,7 @@
         $('#modal-saldo').modal('show');
     });
 
-    $("#modal-saldo").on('click','.btn-warning',function (e) { 
+    $("#modal-saldo").on('click','.btn-warning',function (e) {
         e.preventDefault();
         let url = "{{ route('nasabah.saldo',':id') }}"
             url = url.replace(':id',$("#id").val())
