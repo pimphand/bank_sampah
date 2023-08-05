@@ -33,7 +33,6 @@ class JenisSampahController extends Controller
         $data = $request->validate([
             "nama" => 'required',
         ]);
-        $data['harga'] = 0;
         JenisSampah::create($data);
         return back();
     }
@@ -61,9 +60,7 @@ class JenisSampahController extends Controller
     {
         $data = $request->validate([
             "nama" => 'required',
-            "harga" => 'required|numeric',
         ]);
-        $data['harga'] = 0;
         JenisSampah::find($id)->update($data);
         return back();
     }

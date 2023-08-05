@@ -13,6 +13,11 @@ class DetailTransaksi extends Model
 
     public function jenis()
     {
-        return $this->belongsTo(JenisSampah::class);
+        return $this->belongsTo(JenisSampah::class, 'jenis_sampah_id');
+    }
+
+    public function sampah()
+    {
+        return $this->belongsTo(Sampah::class);
     }
 }

@@ -1,9 +1,9 @@
 <!-- Sidebar - Brand -->
 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
     <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
+        <img src="{{ asset('logo.png') }}" width="100px" alt="">
     </div>
-    <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+    <div class="sidebar-brand-text mx-3">BASIBA</div>
 </a>
 
 <!-- Divider -->
@@ -74,7 +74,7 @@
 
 <!-- Nav Item - Charts -->
 <li class="nav-item">
-    <a class="nav-link" href="charts.html">
+    <a class="nav-link" href="{{ route('report.index') }}">
         <i class="fas fa-fw fa-chart-area"></i>
         <span>Report</span>
     </a>

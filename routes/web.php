@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisSampahController;
 use App\Http\Controllers\NasabahController;
 use App\Http\Controllers\PencairanController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SampahController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,5 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::resource('admin', NasabahController::class);
     Route::resource('transaksi', TransaksiController::class);
     Route::resource('pencarian', PencairanController::class);
+    Route::resource('report', ReportController::class);
 });

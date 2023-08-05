@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jenis_sampahs', function (Blueprint $table) {
+        Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->foreignId('user_id')->constrained();
+            $table->integer('saldo_awal')->default(0);
+            $table->integer('debit')->default(0);
+            $table->integer('credit')->default(0);
+            $table->text('description');
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jenis_sampahs');
+        Schema::dropIfExists('histories');
     }
 };

@@ -43,10 +43,10 @@
                                         <td>{{ $item->total_berat }}/Kg</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Contoh Button Group">
-                                                {{-- <a class="btn btn-info"
-                                                    href="{{ route('transaksi.edit',$item->id) }}" data-edit="1"><i
+                                                <a class="btn btn-info" target="_blank"
+                                                    href="{{ route('transaksi.show',$item->id) }}" data-edit="1"><i
                                                         class="fa fa-edit"></i>
-                                                </a> --}}
+                                                </a>
                                                 <button type="button" class="btn btn-danger"
                                                     data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
                                             </div>
@@ -115,7 +115,7 @@
         }
     });
 
-    $(".btn-danger").click(function (e) { 
+    $(".btn-danger").click(function (e) {
         e.preventDefault();
         let url = "{{ route('transaksi.destroy',':id') }}"
             url = url.replace(':id',$(this).data('id'))

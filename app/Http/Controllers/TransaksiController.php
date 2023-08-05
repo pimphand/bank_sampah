@@ -72,8 +72,16 @@ class TransaksiController extends Controller
             ]);
 
             $user = User::find($transaksi->user_id);
+            $saldo = $user->saldo;
             $user->saldo = $total;
             $user->save();
+
+            $user->histories()->create([
+                'saldo_awal' => $saldo,
+                'debit' => $user->saldo,
+                'credit' => 0,
+                'description' => "Hasil Penjualan Sampah"
+            ]);
 
             return $transaksi;
         });
@@ -86,7 +94,8 @@ class TransaksiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Transaksi::find($id);
+        return view('nota',compact('data'));
     }
 
     /**
@@ -173,6 +182,9 @@ class TransaksiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $transaksi = Transaksi::find($id);
+        $transaksi->details()->delete();
+
+        return $transaksi->delete();
     }
 }
