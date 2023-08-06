@@ -28,9 +28,10 @@
                                         <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
                                             colspan="1" style="width: 191px;"
                                             aria-label="Start date: activate to sort column ascending">Berat</th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1"
-                                            colspan="1" style="width: 173px;"
-                                            aria-label="Salary: activate to sort column ascending">Aksi</th>
+                                        @if (auth()->user()->role == 'admin')
+                                            <th class="sorting" tabindex="0" aria-controls="dataTable" rowspan="1" colspan="1" style="width: 173px;"
+                                                aria-label="Salary: activate to sort column ascending">Aksi</th>
+                                        @endif
                                     </tr>
                                 </thead>
 
@@ -41,16 +42,17 @@
                                         <td>{{ $item->nasabah->nama }}</td>
                                         <td>Rp. {{ number_format($item->total_harga) }}</td>
                                         <td>{{ $item->total_berat }}/Kg</td>
+                                        @if (auth()->user()->role == 'admin')
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Contoh Button Group">
-                                                <a class="btn btn-info" target="_blank"
-                                                    href="{{ route('transaksi.show',$item->id) }}" data-edit="1"><i
-                                                        class="fa fa-edit"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
-                                            </div>
-                                        </td>
+                                                   <a class="btn btn-info" target="_blank" href="{{ route('transaksi.show',$item->id) }}" data-edit="1"><i
+                                                            class="fa fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-danger" data-id="{{ $item->id }}"><i class="fa fa-trash"></i></button>
+
+                                                </div>
+                                            </td>
+                                            @endif
                                     </tr>
                                     @endforeach
                                 </tbody>

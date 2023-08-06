@@ -18,15 +18,16 @@ class ReportController extends Controller
         $now = Carbon::now();
 
         // Count transactions for the current week
-        $minggu_ini = Transaksi::whereBetween('created_at', [$now->startOfWeek(), $now->endOfWeek()])->count();
+        $minggu_ini = Transaksi::whereBetween('created_at', [date('Y-m-d',strtotime($now->subDay(1))), date('Y-m-d', strtotime($now->endOfWeek()))])->count();
 
         // Count transactions for the previous week
-        $minggu_lalu = Transaksi::whereBetween('created_at', [$now->startOfWeek()->subWeek(), $now->endOfWeek()->subWeek()])->count();
+        $minggu_lalu = Transaksi::whereBetween('created_at', [date('Y-m-d',strtotime($now->startOfWeek()->subWeek())), date('Y-m-d',strtotime($now->endOfWeek()->subWeek()))])->count();
 
         // Count transactions for the current month
-        $bulan_ini = Transaksi::whereYear('created_at', $now->year)
-            ->whereMonth('created_at', $now->month)
-            ->count();
+        $start = Carbon::parse(now())->subDay(1)->format('Y-m-d');
+        $end = Carbon::parse(now())->endOfMonth()->format('Y-m-d');
+
+        $bulan_ini = Transaksi::whereBetween('created_at', [$start, $end])->count();
 
         // Count transactions for the previous month
         $bulan_lalu = Transaksi::whereYear('created_at', $now->subMonth()->year)
@@ -62,7 +63,15 @@ class ReportController extends Controller
             'end.after_or_equal' =>'Tanggal selesai tidak boleh besar dari tanggal mulai',
         ]);
 
-        return Excel::download(new ExportsTransaksi($request), 'transaksi_'. strtotime(now()).'.xlsx');
+
+        $start = Carbon::parse($request->start)->subDay(1)->format('Y-m-d');
+        $end = Carbon::parse($request->end)->format('Y-m-d');
+
+        $transaksi = Transaksi::whereBetween('created_at', [$start, $end])->get();
+
+        // $transaksi = Transaksi::whereBetween('created_at', [date('Y-m-d', strtotime($request->start)), date('Y-m-d', strtotime($request->end))])->get();
+
+        return Excel::download(new ExportsTransaksi($transaksi), 'transaksi_'. strtotime(now()).'.xlsx');
     }
 
     /**

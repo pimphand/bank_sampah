@@ -10,7 +10,11 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        $transaksi = Transaksi::all();
+        if (auth()->user()->role == 'admin') {
+            $transaksi = Transaksi::all();
+        }else{
+            $transaksi = Transaksi::whereUserId(auth()->id())->get();
+        }
         $user = User::whereRole('nasabah')->get();
         return view('admin.dashboard', compact('transaksi', 'user'));
     }

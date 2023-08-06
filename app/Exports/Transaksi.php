@@ -18,13 +18,15 @@ class Transaksi implements FromView
 
     public function __construct($request)
     {
-        $this->request = $request;
+        $this->data = $request;
     }
 
     public function view(): View
     {
+
+        dd($this->data);
         return view('report', [
-            'transaksi' => ModelTransaksi::query()->whereBetween('created_at', [$this->request->start, $this->request->end])->get()
+            'transaksi' => $this->data
         ]);
     }
 }
